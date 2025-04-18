@@ -1,164 +1,1215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Windows 9</title>
-  <style>
-    /* General Reset */
-    body, html {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
-      color: white;
-      height: 100%;
-      overflow: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows 9</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
 
-    /* Taskbar */
-    .taskbar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 40px;
-      background: #333;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 10px;
-      color: white;
-      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
-    }
-    .start-menu-button {
-      background: #555;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .start-menu-button:hover {
-      background: #777;
-    }
-    .taskbar-icons {
-      display: flex;
-      gap: 10px;
-    }
-    .icon {
-      font-size: 20px;
-      cursor: pointer;
-    }
-    .clock {
-      font-size: 14px;
-    }
+        body {
+            overflow: hidden;
+            background-color: #0078d7;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
 
-    /* Desktop */
-    .desktop {
-      position: relative;
-      height: calc(100% - 40px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+        /* Windows 9 Desktop */
+        .desktop {
+            width: 100%;
+            height: calc(100% - 40px); /* Height minus taskbar */
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
 
-    /* Window */
-    .window {
-      width: 300px;
-      background: #f3f3f3;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      border-radius: 5px;
-      overflow: hidden;
-      position: absolute;
-      top: 100px;
-      left: 100px;
-    }
-    .window-header {
-      background: #0078d7;
-      padding: 10px;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .window-content {
-      padding: 15px;
-      color: black;
-    }
-    .close-button {
-      background: red;
-      color: white;
-      border: none;
-      padding: 5px;
-      cursor: pointer;
-    }
-    .close-button:hover {
-      background: darkred;
-    }
+        /* Windows 9 Window Component */
+        .window {
+            position: absolute;
+            background-color: #ffffff;
+            border: 1px solid #aaaaaa;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            min-width: 300px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+        }
 
-    /* Desktop Icon */
-    .desktop-icon {
-      text-align: center;
-      width: 80px;
-      margin: 10px;
-    }
-    .desktop-icon img {
-      width: 50px;
-      height: 50px;
-    }
-    .desktop-icon p {
-      margin-top: 5px;
-      font-size: 14px;
-      color: white;
-    }
-  </style>
+        .window-titlebar {
+            height: 30px;
+            background: linear-gradient(to bottom, #cedeef 0%, #8db2e3 50%, #4985d6 51%, #0078d7 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            font-weight: bold;
+            cursor: move;
+            position: relative;
+        }
+
+        .window-controls {
+            position: absolute;
+            right: 0;
+            top: 0;
+            display: flex;
+            height: 100%;
+        }
+
+        .window-button {
+            width: 45px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .window-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .window-button.close:hover {
+            background-color: #e81123;
+        }
+
+        .window-content {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Explorer Specific Styles */
+        .explorer-container {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .explorer-sidebar {
+            width: 200px;
+            background-color: #f0f0f0;
+            border-right: 1px solid #d0d0d0;
+            padding: 10px 0;
+        }
+
+        .sidebar-item {
+            padding: 5px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar-item:hover {
+            background-color: #e5f3ff;
+        }
+
+        .sidebar-item.selected {
+            background-color: #cce8ff;
+        }
+
+        .sidebar-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            background-color: #0078d7;
+        }
+
+        .explorer-content {
+            flex: 1;
+            background-color: white;
+            overflow: auto;
+            padding: 5px;
+        }
+
+        .explorer-toolbar {
+            height: 36px;
+            background: linear-gradient(to bottom, #fdfdfd 0%, #f6f6f6 100%);
+            border-bottom: 1px solid #d0d0d0;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .toolbar-button {
+            padding: 4px 10px;
+            margin-right: 5px;
+            border: 1px solid transparent;
+            background-color: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .toolbar-button:hover {
+            border: 1px solid #ccc;
+            background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 100%);
+        }
+
+        .address-bar {
+            flex: 1;
+            height: 24px;
+            margin: 0 10px;
+            border: 1px solid #aaa;
+            padding: 0 5px;
+        }
+
+        .explorer-files {
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+        }
+
+        .file-item {
+            width: 80px;
+            height: 80px;
+            margin: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 5px;
+            border: 1px solid transparent;
+        }
+
+        .file-item:hover {
+            background-color: #e5f3ff;
+            border: 1px solid #99d1ff;
+        }
+
+        .file-item.selected {
+            background-color: #cce8ff;
+            border: 1px solid #99d1ff;
+        }
+
+        .file-icon {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 5px;
+            background-color: #ffd700;
+        }
+
+        .folder-icon {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 5px;
+            background-color: #ffc066;
+        }
+
+        .file-name {
+            text-align: center;
+            font-size: 11px;
+            word-break: break-word;
+            overflow: hidden;
+            max-width: 100%;
+        }
+
+        /* Taskbar */
+        .taskbar {
+            height: 40px;
+            background: linear-gradient(to bottom, #3c5a96 0%, #0078d7 100%);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+        }
+
+        .start-button {
+            width: 50px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom, #52a552 0%, #377f37 100%);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .start-button:hover {
+            background: linear-gradient(to bottom, #5fb85f 0%, #429e42 100%);
+        }
+
+        .taskbar-items {
+            flex: 1;
+            display: flex;
+            height: 100%;
+        }
+
+        .taskbar-item {
+            min-width: 160px;
+            height: 80%;
+            margin-right: 5px;
+            background: linear-gradient(to bottom, #5889c4 0%, #3973b9 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            cursor: pointer;
+            border: 1px solid #2c5b95;
+        }
+
+        .taskbar-item:hover {
+            background: linear-gradient(to bottom, #6897d0 0%, #4a82c3 100%);
+        }
+
+        .taskbar-item.active {
+            background: linear-gradient(to bottom, #78a5d9 0%, #5a90cb 100%);
+        }
+
+        .clock {
+            margin-right: 10px;
+            color: white;
+            font-size: 12px;
+        }
+
+        /* Context Menu */
+        .context-menu {
+            position: absolute;
+            background-color: #f0f0f0;
+            border: 1px solid #cccccc;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+            min-width: 150px;
+        }
+
+        .context-menu-item {
+            padding: 5px 20px;
+            cursor: pointer;
+        }
+
+        .context-menu-item:hover {
+            background-color: #e0e0e0;
+        }
+
+        .context-menu-separator {
+            height: 1px;
+            background-color: #cccccc;
+            margin: 5px 0;
+        }
+    </style>
 </head>
 <body>
-  <div class="taskbar">
-    <div class="start-menu-button">Start</div>
-    <div class="taskbar-icons">
-      <div class="icon">🌐</div>
-      <div class="icon">📁</div>
-      <div class="icon">🛠️</div>
+    <div class="desktop" id="desktop">
+        <!-- Windows will be dynamically created here -->
     </div>
-    <div class="clock" id="clock"></div>
-  </div>
 
-  <div class="desktop">
-    <div class="window" id="window">
-      <div class="window-header">
-        <span>Window Title</span>
-        <button class="close-button" id="close-button">X</button>
-      </div>
-      <div class="window-content">
-        <p>Welcome to Windows 9!</p>
-      </div>
+    <div class="taskbar">
+        <div class="start-button">Start</div>
+        <div class="taskbar-items" id="taskbar-items">
+            <!-- Taskbar icons will be added here -->
+        </div>
+        <div class="clock" id="clock">12:00 PM</div>
     </div>
-    <div class="desktop-icon">
-      <img src="folder-icon.png" alt="Folder">
-      <p>My Documents</p>
-    </div>
-  </div>
 
-  <script>
-    // JavaScript for Windows 9
+    <script>
+        // Initialize the file system if it doesn't exist
+        if (!localStorage.getItem('win9FileSystem')) {
+            const defaultFileSystem = {
+                'C:': {
+                    'Program Files': {
+                        'Internet Explorer': {},
+                        'Windows': {}
+                    },
+                    'Users': {
+                        'User': {
+                            'Documents': {
+                                'My Document.txt': { type: 'file', content: 'This is a text document.' },
+                                'Report.docx': { type: 'file', content: '' }
+                            },
+                            'Desktop': {
+                                'My Computer.lnk': { type: 'shortcut', target: 'explorer:C:' },
+                                'Recycle Bin.lnk': { type: 'shortcut', target: 'recycle-bin:' },
+                                'Internet Explorer.lnk': { type: 'shortcut', target: 'ie:' }
+                            },
+                            'Downloads': {
+                                'setup.exe': { type: 'file', content: '' }
+                            },
+                            'Pictures': {
+                                'Sample Picture.jpg': { type: 'file', content: '' }
+                            }
+                        }
+                    },
+                    'Windows': {
+                        'System32': {},
+                        'Temp': {}
+                    }
+                }
+            };
+            localStorage.setItem('win9FileSystem', JSON.stringify(defaultFileSystem));
+        }
 
-    // Display the current time
-    function updateClock() {
-      const clock = document.getElementById('clock');
-      const now = new Date();
-      clock.textContent = now.toLocaleTimeString();
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
+        // Window Manager
+        class WindowManager {
+            constructor() {
+                this.windows = [];
+                this.activeWindow = null;
+                this.zIndexCounter = 100;
+                
+                // Bind to desktop for context menu
+                const desktop = document.getElementById('desktop');
+                desktop.addEventListener('contextmenu', this.showDesktopContextMenu.bind(this));
+                desktop.addEventListener('click', this.hideAllContextMenus.bind(this));
+            }
+            
+            createWindow(title, width, height, x, y, content, appId) {
+                // Create window container
+                const windowEl = document.createElement('div');
+                windowEl.className = 'window';
+                windowEl.style.width = width + 'px';
+                windowEl.style.height = height + 'px';
+                windowEl.style.left = x + 'px';
+                windowEl.style.top = y + 'px';
+                windowEl.dataset.appId = appId;
+                
+                // Create titlebar
+                const titlebar = document.createElement('div');
+                titlebar.className = 'window-titlebar';
+                titlebar.textContent = title;
+                
+                // Create window controls (min, max, close)
+                const controls = document.createElement('div');
+                controls.className = 'window-controls';
+                
+                const minButton = document.createElement('div');
+                minButton.className = 'window-button minimize';
+                minButton.innerHTML = '&#x2212;'; // Unicode minus sign
+                minButton.addEventListener('click', () => this.minimizeWindow(windowEl));
+                
+                const maxButton = document.createElement('div');
+                maxButton.className = 'window-button maximize';
+                maxButton.innerHTML = '&#x25A1;'; // Unicode white square
+                maxButton.addEventListener('click', () => this.maximizeWindow(windowEl));
+                
+                const closeButton = document.createElement('div');
+                closeButton.className = 'window-button close';
+                closeButton.innerHTML = '&#x2715;'; // Unicode multiplication X
+                closeButton.addEventListener('click', () => this.closeWindow(windowEl));
+                
+                controls.appendChild(minButton);
+                controls.appendChild(maxButton);
+                controls.appendChild(closeButton);
+                titlebar.appendChild(controls);
+                
+                // Create content area
+                const contentArea = document.createElement('div');
+                contentArea.className = 'window-content';
+                contentArea.innerHTML = content;
+                
+                // Build window
+                windowEl.appendChild(titlebar);
+                windowEl.appendChild(contentArea);
+                
+                // Add to desktop
+                document.getElementById('desktop').appendChild(windowEl);
+                
+                // Add to window registry
+                const windowObj = {
+                    el: windowEl,
+                    id: Date.now(),
+                    title,
+                    appId,
+                    isMinimized: false
+                };
+                this.windows.push(windowObj);
+                
+                // Setup dragging
+                this.setupDragging(windowEl, titlebar);
+                
+                // Activate the window
+                this.activateWindow(windowEl);
+                
+                // Add to taskbar
+                this.addToTaskbar(windowObj);
+                
+                return windowObj;
+            }
+            
+            setupDragging(windowEl, handle) {
+                let offsetX, offsetY, isDragging = false;
+                
+                handle.addEventListener('mousedown', (e) => {
+                    // Only proceed if left mouse button is pressed
+                    if (e.button !== 0) return;
+                    
+                    this.activateWindow(windowEl);
+                    
+                    isDragging = true;
+                    offsetX = e.clientX - windowEl.getBoundingClientRect().left;
+                    offsetY = e.clientY - windowEl.getBoundingClientRect().top;
+                    
+                    // Prevent text selection during drag
+                    e.preventDefault();
+                });
+                
+                document.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    
+                    const x = e.clientX - offsetX;
+                    const y = e.clientY - offsetY;
+                    
+                    // Keep window within viewport bounds
+                    const maxX = window.innerWidth - windowEl.offsetWidth;
+                    const maxY = window.innerHeight - windowEl.offsetHeight - 40; // Subtract taskbar height
+                    
+                    windowEl.style.left = Math.max(0, Math.min(x, maxX)) + 'px';
+                    windowEl.style.top = Math.max(0, Math.min(y, maxY)) + 'px';
+                });
+                
+                document.addEventListener('mouseup', () => {
+                    isDragging = false;
+                });
+            }
+            
+            activateWindow(windowEl) {
+                // Remove active class from all windows
+                document.querySelectorAll('.window').forEach(w => {
+                    w.style.zIndex = '100';
+                });
+                
+                // Set this window as active
+                windowEl.style.zIndex = (++this.zIndexCounter).toString();
+                this.activeWindow = windowEl;
+                
+                // Update taskbar
+                this.updateTaskbarActiveState(windowEl.dataset.appId);
+            }
+            
+            closeWindow(windowEl) {
+                // Find the window in our registry
+                const index = this.windows.findIndex(w => w.el === windowEl);
+                if (index !== -1) {
+                    // Remove from taskbar
+                    const taskbarItem = document.querySelector(`.taskbar-item[data-app-id="${windowEl.dataset.appId}"]`);
+                    if (taskbarItem) {
+                        taskbarItem.remove();
+                    }
+                    
+                    // Remove from windows array
+                    this.windows.splice(index, 1);
+                }
+                
+                // Remove the DOM element
+                windowEl.remove();
+            }
+            
+            minimizeWindow(windowEl) {
+                // Find the window in our registry
+                const windowObj = this.windows.find(w => w.el === windowEl);
+                if (windowObj) {
+                    windowObj.isMinimized = true;
+                    windowEl.style.display = 'none';
+                }
+            }
+            
+            maximizeWindow(windowEl) {
+                const isMaximized = windowEl.classList.contains('maximized');
+                
+                if (isMaximized) {
+                    // Restore to previous size and position
+                    windowEl.style.top = windowEl.dataset.prevTop;
+                    windowEl.style.left = windowEl.dataset.prevLeft;
+                    windowEl.style.width = windowEl.dataset.prevWidth;
+                    windowEl.style.height = windowEl.dataset.prevHeight;
+                    windowEl.classList.remove('maximized');
+                } else {
+                    // Store current size and position
+                    windowEl.dataset.prevTop = windowEl.style.top;
+                    windowEl.dataset.prevLeft = windowEl.style.left;
+                    windowEl.dataset.prevWidth = windowEl.style.width;
+                    windowEl.dataset.prevHeight = windowEl.style.height;
+                    
+                    // Maximize
+                    windowEl.style.top = '0';
+                    windowEl.style.left = '0';
+                    windowEl.style.width = '100%';
+                    windowEl.style.height = 'calc(100% - 40px)'; // Account for taskbar
+                    windowEl.classList.add('maximized');
+                }
+            }
+            
+            addToTaskbar(windowObj) {
+                const taskbarItems = document.getElementById('taskbar-items');
+                
+                // Create taskbar item
+                const taskbarItem = document.createElement('div');
+                taskbarItem.className = 'taskbar-item';
+                taskbarItem.textContent = windowObj.title;
+                taskbarItem.dataset.appId = windowObj.appId;
+                taskbarItem.dataset.windowId = windowObj.id;
+                
+                // Add click handler to switch to window
+                taskbarItem.addEventListener('click', () => {
+                    const windowEl = windowObj.el;
+                    
+                    if (windowObj.isMinimized) {
+                        // Restore window
+                        windowEl.style.display = 'flex';
+                        windowObj.isMinimized = false;
+                        this.activateWindow(windowEl);
+                    } else if (windowEl === this.activeWindow) {
+                        // Minimize if it's the active window
+                        this.minimizeWindow(windowEl);
+                    } else {
+                        // Activate if it's not the active window
+                        this.activateWindow(windowEl);
+                    }
+                });
+                
+                taskbarItems.appendChild(taskbarItem);
+            }
+            
+            updateTaskbarActiveState(appId) {
+                // Remove active class from all taskbar items
+                document.querySelectorAll('.taskbar-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Add active class to matching taskbar item
+                const taskbarItem = document.querySelector(`.taskbar-item[data-app-id="${appId}"]`);
+                if (taskbarItem) {
+                    taskbarItem.classList.add('active');
+                }
+            }
+            
+            showDesktopContextMenu(e) {
+                e.preventDefault();
+                this.hideAllContextMenus();
+                
+                // Create context menu
+                const contextMenu = document.createElement('div');
+                contextMenu.className = 'context-menu';
+                contextMenu.style.left = e.pageX + 'px';
+                contextMenu.style.top = e.pageY + 'px';
+                
+                // Add context menu items
+                const menuItems = [
+                    { label: 'View', action: () => {} },
+                    { label: 'Sort By', action: () => {} },
+                    { label: 'Refresh', action: () => { location.reload(); } },
+                    { type: 'separator' },
+                    { label: 'New Folder', action: () => { this.createNewFolder(); } },
+                    { label: 'Paste', action: () => {} },
+                    { type: 'separator' },
+                    { label: 'Display Settings', action: () => {} },
+                    { label: 'Personalize', action: () => {} }
+                ];
+                
+                menuItems.forEach(item => {
+                    if (item.type === 'separator') {
+                        const separator = document.createElement('div');
+                        separator.className = 'context-menu-separator';
+                        contextMenu.appendChild(separator);
+                    } else {
+                        const menuItem = document.createElement('div');
+                        menuItem.className = 'context-menu-item';
+                        menuItem.textContent = item.label;
+                        menuItem.addEventListener('click', () => {
+                            item.action();
+                            contextMenu.remove();
+                        });
+                        contextMenu.appendChild(menuItem);
+                    }
+                });
+                
+                document.body.appendChild(contextMenu);
+            }
+            
+            hideAllContextMenus() {
+                document.querySelectorAll('.context-menu').forEach(menu => {
+                    menu.remove();
+                });
+            }
+            
+            createNewFolder() {
+                // Function to create a new folder on the desktop
+                alert('New Folder feature would create a folder here');
+                // In a full implementation, you would add this to localStorage
+            }
+        }
 
-    // Close the window
-    const closeButton = document.getElementById('close-button');
-    const windowElement = document.getElementById('window');
+        // File Explorer Class
+        class FileExplorer {
+            constructor() {
+                this.currentPath = 'C:/Users/User/Desktop';
+                this.selectedItems = [];
+            }
+            
+            // Convert path format from C:/Users to C:\\Users for internal use
+            formatPathForStorage(path) {
+                return path.replace(/\//g, '\\').replace(/^(.+):/, '$1:');
+            }
+            
+            formatPathForDisplay(path) {
+                return path.replace(/\\/g, '/');
+            }
+            
+            getPathComponents(path) {
+                // Remove any leading slash and split by slashes
+                const cleanPath = path.replace(/^\//, '');
+                return cleanPath.split('/').filter(Boolean);
+            }
+            
+            getFilesystemObject(path) {
+                const components = this.getPathComponents(path);
+                const filesystem = JSON.parse(localStorage.getItem('win9FileSystem'));
+                
+                let current = filesystem;
+                for (const component of components) {
+                    if (current[component] === undefined) {
+                        return null; // Path doesn't exist
+                    }
+                    current = current[component];
+                }
+                
+                return current;
+            }
+            
+            generateExplorerHTML(path) {
+                const formattedPath = this.formatPathForDisplay(path);
+                
+                return `
+                    <div class="explorer-toolbar">
+                        <button class="toolbar-button back-button">←</button>
+                        <button class="toolbar-button forward-button">→</button>
+                        <button class="toolbar-button up-button">↑</button>
+                        <input type="text" class="address-bar" value="${formattedPath}">
+                        <button class="toolbar-button refresh-button">↻</button>
+                    </div>
+                    <div class="explorer-container">
+                        <div class="explorer-sidebar">
+                            <div class="sidebar-item" data-path="C:/Users/User/Desktop">
+                                <div class="sidebar-icon"></div>Desktop
+                            </div>
+                            <div class="sidebar-item" data-path="C:/Users/User/Documents">
+                                <div class="sidebar-icon"></div>Documents
+                            </div>
+                            <div class="sidebar-item" data-path="C:/Users/User/Downloads">
+                                <div class="sidebar-icon"></div>Downloads
+                            </div>
+                            <div class="sidebar-item" data-path="C:/Users/User/Pictures">
+                                <div class="sidebar-icon"></div>Pictures
+                            </div>
+                            <div class="sidebar-item" data-path="C:">
+                                <div class="sidebar-icon"></div>Local Disk (C:)
+                            </div>
+                        </div>
+                        <div class="explorer-content">
+                            <div class="explorer-files" id="file-container">
+                                ${this.renderFolderContents(path)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            renderFolderContents(path) {
+                const folderContents = this.getFilesystemObject(path);
+                if (!folderContents) {
+                    return '<div class="error-message">Folder not found</div>';
+                }
+                
+                let html = '';
+                
+                // Process folders first, then files (Windows Explorer behavior)
+                const entries = Object.entries(folderContents);
+                const folders = entries.filter(([name, details]) => 
+                    typeof details === 'object' && details.type !== 'file' && details.type !== 'shortcut');
+                const files = entries.filter(([name, details]) => 
+                    details.type === 'file' || details.type === 'shortcut');
+                
+                // Add folders
+                for (const [name, details] of folders) {
+                    html += `
+                        <div class="file-item" data-name="${name}" data-type="folder">
+                            <div class="folder-icon"></div>
+                            <div class="file-name">${name}</div>
+                        </div>
+                    `;
+                }
+                
+                // Add files
+                for (const [name, details] of files) {
+                    const iconClass = details.type === 'shortcut' ? 'file-icon shortcut' : 'file-icon';
+                    html += `
+                        <div class="file-item" data-name="${name}" data-type="${details.type}">
+                            <div class="${iconClass}"></div>
+                            <div class="file-name">${name}</div>
+                        </div>
+                    `;
+                }
+                
+                return html;
+            }
+            
+            openFolder(path) {
+                this.currentPath = path;
+                
+                // Update file container
+                const fileContainer = document.getElementById('file-container');
+                if (fileContainer) {
+                    fileContainer.innerHTML = this.renderFolderContents(path);
+                    this.setupFileItemListeners();
+                }
+                
+                // Update address bar
+                const addressBar = document.querySelector('.address-bar');
+                if (addressBar) {
+                    addressBar.value = this.formatPathForDisplay(path);
+                }
+                
+                // Update sidebar selection
+                document.querySelectorAll('.sidebar-item').forEach(item => {
+                    item.classList.remove('selected');
+                    if (item.dataset.path === path) {
+                        item.classList.add('selected');
+                    }
+                });
+            }
+            
+            createFile(path, name, type, content = '') {
+                const pathComponents = this.getPathComponents(path);
+                const filesystem = JSON.parse(localStorage.getItem('win9FileSystem'));
+                
+                // Navigate to the correct location
+                let current = filesystem;
+                for (const component of pathComponents) {
+                    if (!current[component]) {
+                        // Create path if it doesn't exist
+                        current[component] = {};
+                    }
+                    current = current[component];
+                }
+                
+                // Create the file or folder
+                if (type === 'folder') {
+                    current[name] = {};
+                } else {
+                    current[name] = { type: 'file', content };
+                }
+                
+                // Save updates
+                localStorage.setItem('win9FileSystem', JSON.stringify(filesystem));
+                
+                // Refresh view
+                this.openFolder(path);
+            }
+            
+            deleteItem(path, name) {
+                const pathComponents = this.getPathComponents(path);
+                const filesystem = JSON.parse(localStorage.getItem('win9FileSystem'));
+                
+                // Navigate to the correct location
+                let current = filesystem;
+                for (const component of pathComponents) {
+                    current = current[component];
+                    if (!current) return false; // Path doesn't exist
+                }
+                
+                // Delete the item
+                if (current[name]) {
+                    delete current[name];
+                    
+                    // Save updates
+                    localStorage.setItem('win9FileSystem', JSON.stringify(filesystem));
+                    
+                    // Refresh view
+                    this.openFolder(path);
+                    return true;
+                }
+                
+                return false;
+            }
+            
+            renameItem(path, oldName, newName) {
+                const pathComponents = this.getPathComponents(path);
+                const filesystem = JSON.parse(localStorage.getItem('win9FileSystem'));
+                
+                // Navigate to the correct location
+                let current = filesystem;
+                for (const component of pathComponents) {
+                    current = current[component];
+                    if (!current) return false; // Path doesn't exist
+                }
+                
+                // Check if target exists
+                if (current[newName]) {
+                    alert('An item with that name already exists.');
+                    return false;
+                }
+                
+                // Rename the item
+                if (current[oldName]) {
+                    current[newName] = current[oldName];
+                    delete current[oldName];
+                    
+                    // Save updates
+                    localStorage.setItem('win9FileSystem', JSON.stringify(filesystem));
+                    
+                    // Refresh view
+                    this.openFolder(path);
+                    return true;
+                }
+                
+                return false;
+            }
+            
+            setupListeners(windowEl) {
+                // Set up toolbar button listeners
+                const backButton = windowEl.querySelector('.back-button');
+              if (backButton) {
+                    backButton.addEventListener('click', () => {
+                        // Would implement browser-like history navigation
+                        alert('Back navigation would go to previous folder in history');
+                    });
+                }
+                
+                const forwardButton = windowEl.querySelector('.forward-button');
+                if (forwardButton) {
+                    forwardButton.addEventListener('click', () => {
+                        // Would implement browser-like history navigation
+                        alert('Forward navigation would go to next folder in history');
+                    });
+                }
+                
+                const upButton = windowEl.querySelector('.up-button');
+                if (upButton) {
+                    upButton.addEventListener('click', () => {
+                        // Navigate up one directory level
+                        const pathParts = this.currentPath.split('/');
+                        if (pathParts.length > 1) {
+                            pathParts.pop(); // Remove last part
+                            const parentPath = pathParts.join('/');
+                            this.openFolder(parentPath);
+                        }
+                    });
+                }
+                
+                const refreshButton = windowEl.querySelector('.refresh-button');
+                if (refreshButton) {
+                    refreshButton.addEventListener('click', () => {
+                        this.openFolder(this.currentPath);
+                    });
+                }
+                
+                const addressBar = windowEl.querySelector('.address-bar');
+                if (addressBar) {
+                    addressBar.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            const newPath = addressBar.value;
+                            this.openFolder(newPath);
+                        }
+                    });
+                }
+                
+                // Set up sidebar item listeners
+                const sidebarItems = windowEl.querySelectorAll('.sidebar-item');
+                sidebarItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        const path = item.dataset.path;
+                        this.openFolder(path);
+                    });
+                });
+                
+                // Setup file listeners
+                this.setupFileItemListeners();
+                
+                // Right-click context menu on empty space
+                const explorerContent = windowEl.querySelector('.explorer-content');
+                if (explorerContent) {
+                    explorerContent.addEventListener('contextmenu', (e) => {
+                        // Check if clicking on empty space (not a file item)
+                        if (!e.target.closest('.file-item')) {
+                            e.preventDefault();
+                            this.showExplorerContextMenu(e, null);
+                        }
+                    });
+                }
+            }
+            
+            setupFileItemListeners() {
+                const fileItems = document.querySelectorAll('.file-item');
+                fileItems.forEach(item => {
+                    // Double-click to open
+                    item.addEventListener('dblclick', () => {
+                        const name = item.dataset.name;
+                        const type = item.dataset.type;
+                        
+                        if (type === 'folder') {
+                            const newPath = this.currentPath + '/' + name;
+                            this.openFolder(newPath);
+                        } else if (type === 'file') {
+                            // For files, you might want to open a text editor or viewer
+                            alert(`Opening file: ${name}`);
+                            // In a full implementation, you would launch the appropriate app
+                        } else if (type === 'shortcut') {
+                            // For shortcuts, you would open the target
+                            alert(`Opening shortcut: ${name}`);
+                        }
+                    });
+                    
+                    // Single-click to select
+                    item.addEventListener('click', (e) => {
+                        // If not holding CTRL, deselect all other items
+                        if (!e.ctrlKey) {
+                            fileItems.forEach(f => f.classList.remove('selected'));
+                            this.selectedItems = [];
+                        }
+                        
+                        // Toggle selection on this item
+                        item.classList.toggle('selected');
+                        
+                        // Update selected items list
+                        if (item.classList.contains('selected')) {
+                            this.selectedItems.push(item.dataset.name);
+                        } else {
+                            const index = this.selectedItems.indexOf(item.dataset.name);
+                            if (index !== -1) {
+                                this.selectedItems.splice(index, 1);
+                            }
+                        }
+                    });
+                    
+                    // Right-click context menu
+                    item.addEventListener('contextmenu', (e) => {
+                        e.preventDefault();
+                        
+                        // If right-clicking on unselected item, select only this one
+                        if (!item.classList.contains('selected')) {
+                            fileItems.forEach(f => f.classList.remove('selected'));
+                            item.classList.add('selected');
+                            this.selectedItems = [item.dataset.name];
+                        }
+                        
+                        this.showFileContextMenu(e, item.dataset.name, item.dataset.type);
+                    });
+                });
+            }
+            
+            showFileContextMenu(e, filename, filetype) {
+                // Remove any existing context menus
+                document.querySelectorAll('.context-menu').forEach(menu => menu.remove());
+                
+                // Create context menu
+                const contextMenu = document.createElement('div');
+                contextMenu.className = 'context-menu';
+                contextMenu.style.left = e.pageX + 'px';
+                contextMenu.style.top = e.pageY + 'px';
+                
+                // Add context menu items
+                const menuItems = [
+                    { label: 'Open', action: () => {
+                        if (filetype === 'folder') {
+                            const newPath = this.currentPath + '/' + filename;
+                            this.openFolder(newPath);
+                        } else {
+                            alert(`Opening ${filename}`);
+                        }
+                    }},
+                    { type: 'separator' },
+                    { label: 'Cut', action: () => { alert('Cut ' + filename); } },
+                    { label: 'Copy', action: () => { alert('Copy ' + filename); } },
+                    { type: 'separator' },
+                    { label: 'Delete', action: () => {
+                        if (confirm(`Are you sure you want to delete ${filename}?`)) {
+                            this.deleteItem(this.currentPath, filename);
+                        }
+                    }},
+                    { label: 'Rename', action: () => {
+                        const newName = prompt('Enter new name:', filename);
+                        if (newName && newName !== filename) {
+                            this.renameItem(this.currentPath, filename, newName);
+                        }
+                    }},
+                    { type: 'separator' },
+                    { label: 'Properties', action: () => { alert(`Properties for ${filename}`); } }
+                ];
+                
+                menuItems.forEach(item => {
+                    if (item.type === 'separator') {
+                        const separator = document.createElement('div');
+                        separator.className = 'context-menu-separator';
+                        contextMenu.appendChild(separator);
+                    } else {
+                        const menuItem = document.createElement('div');
+                        menuItem.className = 'context-menu-item';
+                        menuItem.textContent = item.label;
+                        menuItem.addEventListener('click', () => {
+                            item.action();
+                            contextMenu.remove();
+                        });
+                        contextMenu.appendChild(menuItem);
+                    }
+                });
+                
+                document.body.appendChild(contextMenu);
+                
+                // Close context menu when clicking elsewhere
+                document.addEventListener('click', function closeMenu(e) {
+                    if (!contextMenu.contains(e.target)) {
+                        contextMenu.remove();
+                        document.removeEventListener('click', closeMenu);
+                    }
+                });
+            }
+            
+            showExplorerContextMenu(e) {
+                // Remove any existing context menus
+                document.querySelectorAll('.context-menu').forEach(menu => menu.remove());
+                
+                // Create context menu
+                const contextMenu = document.createElement('div');
+                contextMenu.className = 'context-menu';
+                contextMenu.style.left = e.pageX + 'px';
+                contextMenu.style.top = e.pageY + 'px';
+                
+                // Add context menu items
+                const menuItems = [
+                    { label: 'View', submenu: ['Large Icons', 'Small Icons', 'List', 'Details'] },
+                    { label: 'Sort By', submenu: ['Name', 'Date', 'Type', 'Size'] },
+                    { label: 'Refresh', action: () => { this.openFolder(this.currentPath); } },
+                    { type: 'separator' },
+                    { label: 'New', submenu: [
+                        { label: 'Folder', action: () => {
+                            const folderName = prompt('Enter folder name:', 'New Folder');
+                            if (folderName) {
+                                this.createFile(this.currentPath, folderName, 'folder');
+                            }
+                        }},
+                        { label: 'Text Document', action: () => {
+                            const fileName = prompt('Enter file name:', 'New Text Document.txt');
+                            if (fileName) {
+                                this.createFile(this.currentPath, fileName, 'file', '');
+                            }
+                        }}
+                    ]},
+                    { label: 'Paste', action: () => { alert('Paste operation'); } },
+                    { type: 'separator' },
+                    { label: 'Properties', action: () => { alert(`Properties for ${this.currentPath}`); } }
+                ];
+                
+                menuItems.forEach(item => {
+                    if (item.type === 'separator') {
+                        const separator = document.createElement('div');
+                        separator.className = 'context-menu-separator';
+                        contextMenu.appendChild(separator);
+                    } else {
+                        const menuItem = document.createElement('div');
+                        menuItem.className = 'context-menu-item';
+                        menuItem.textContent = item.label;
+                        
+                        if (item.submenu) {
+                            // Would implement submenu functionality
+                            menuItem.addEventListener('click', () => {
+                                alert(`Submenu for ${item.label} would appear here`);
+                                contextMenu.remove();
+                            });
+                        } else {
+                            menuItem.addEventListener('click', () => {
+                                item.action();
+                                contextMenu.remove();
+                            });
+                        }
+                        
+                        contextMenu.appendChild(menuItem);
+                    }
+                });
+                
+                document.body.appendChild(contextMenu);
+                
+                // Close context menu when clicking elsewhere
+                document.addEventListener('click', function closeMenu(e) {
+                    if (!contextMenu.contains(e.target)) {
+                        contextMenu.remove();
+                        document.removeEventListener('click', closeMenu);
+                    }
+                });
+            }
+        }
 
-    closeButton.addEventListener('click', () => {
-      windowElement.style.display = 'none';
-    });
-  </script>
+        // Initialize the Clock
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12; // Convert 0 to 12
+            
+            document.getElementById('clock').textContent = `${hours}:${minutes} ${ampm}`;
+        }
+
+        // Set wallpaper
+        function setWallpaper() {
+            // In a full implementation, you would load from localStorage if saved
+            document.getElementById('desktop').style.backgroundColor = '#0078d7';
+        }
+
+        // Initialize the OS
+        function initOS() {
+            // Set up the desktop
+            setWallpaper();
+            
+            // Start the clock
+            updateClock();
+            setInterval(updateClock, 1000);
+            
+            // Create window manager instance
+            window.windowManager = new WindowManager();
+            
+            // Create file explorer instance
+            window.fileExplorer = new FileExplorer();
+            
+            // Open File Explorer on startup
+            openFileExplorer();
+        }
+
+        // Open File Explorer function
+        function openFileExplorer() {
+            const explorerPath = 'C:/Users/User/Desktop';
+            
+            // Get screen dimensions for centering
+            const width = 800;
+            const height = 500;
+            const left = (window.innerWidth - width) / 2;
+            const top = (window.innerHeight - height) / 3;
+            
+            // Create file explorer window
+            const explorer = new FileExplorer();
+            const windowObj = window.windowManager.createWindow(
+                'File Explorer', 
+                width, 
+                height, 
+                left, 
+                top, 
+                explorer.generateExplorerHTML(explorerPath),
+                'explorer'
+            );
+            
+            // Set up explorer-specific listeners
+            explorer.setupListeners(windowObj.el);
+        }
+
+        // Start the OS when the page loads
+        window.addEventListener('DOMContentLoaded', initOS);
+    </script>
 </body>
 </html>
