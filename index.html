@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Windows 9</title>
+  <style>
+    /* General Reset */
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: white;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* Taskbar */
+    .taskbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40px;
+      background: #333;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      color: white;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
+    }
+    .start-menu-button {
+      background: #555;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .start-menu-button:hover {
+      background: #777;
+    }
+    .taskbar-icons {
+      display: flex;
+      gap: 10px;
+    }
+    .icon {
+      font-size: 20px;
+      cursor: pointer;
+    }
+    .clock {
+      font-size: 14px;
+    }
+
+    /* Desktop */
+    .desktop {
+      position: relative;
+      height: calc(100% - 40px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Window */
+    .window {
+      width: 300px;
+      background: #f3f3f3;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+      overflow: hidden;
+      position: absolute;
+      top: 100px;
+      left: 100px;
+    }
+    .window-header {
+      background: #0078d7;
+      padding: 10px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .window-content {
+      padding: 15px;
+      color: black;
+    }
+    .close-button {
+      background: red;
+      color: white;
+      border: none;
+      padding: 5px;
+      cursor: pointer;
+    }
+    .close-button:hover {
+      background: darkred;
+    }
+
+    /* Desktop Icon */
+    .desktop-icon {
+      text-align: center;
+      width: 80px;
+      margin: 10px;
+    }
+    .desktop-icon img {
+      width: 50px;
+      height: 50px;
+    }
+    .desktop-icon p {
+      margin-top: 5px;
+      font-size: 14px;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="taskbar">
+    <div class="start-menu-button">Start</div>
+    <div class="taskbar-icons">
+      <div class="icon">🌐</div>
+      <div class="icon">📁</div>
+      <div class="icon">🛠️</div>
+    </div>
+    <div class="clock" id="clock"></div>
+  </div>
+
+  <div class="desktop">
+    <div class="window" id="window">
+      <div class="window-header">
+        <span>Window Title</span>
+        <button class="close-button" id="close-button">X</button>
+      </div>
+      <div class="window-content">
+        <p>Welcome to Windows 9!</p>
+      </div>
+    </div>
+    <div class="desktop-icon">
+      <img src="folder-icon.png" alt="Folder">
+      <p>My Documents</p>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript for Windows 9
+
+    // Display the current time
+    function updateClock() {
+      const clock = document.getElementById('clock');
+      const now = new Date();
+      clock.textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Close the window
+    const closeButton = document.getElementById('close-button');
+    const windowElement = document.getElementById('window');
+
+    closeButton.addEventListener('click', () => {
+      windowElement.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
